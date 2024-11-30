@@ -8,7 +8,7 @@ class NetworkScannerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Ağ Tarayıcı")
-        self.root.geometry("400x500")
+        self.root.geometry("400x600")
 
         self.output_text = ctk.CTkTextbox(self.root, width=380, height=200)
         self.output_text.pack(pady=10)
@@ -18,6 +18,21 @@ class NetworkScannerApp:
 
         self.ip_entry = ctk.CTkEntry(self.root, placeholder_text="IP Aralığı (örn: 192.168.1.1/24)")
         self.ip_entry.pack(pady=10)
+
+        self.device_type_entry = ctk.CTkEntry(self.root, placeholder_text="Cihaz Türü (örn: Bilgisayar)")
+        self.device_type_entry.pack(pady=10)
+
+        self.device_location_entry = ctk.CTkEntry(self.root, placeholder_text="Cihaz Konumu (örn: Ofis)")
+        self.device_location_entry.pack(pady=10)
+
+        self.device_description_entry = ctk.CTkEntry(self.root, placeholder_text="Açıklama")
+        self.device_description_entry.pack(pady=10)
+
+        self.device_os_entry = ctk.CTkEntry(self.root, placeholder_text="İşletim Sistemi (örn: Windows)")
+        self.device_os_entry.pack(pady=10)
+
+        self.device_owner_entry = ctk.CTkEntry(self.root, placeholder_text="Cihaz Sahibi")
+        self.device_owner_entry.pack(pady=10)
 
         self.scan_button = ctk.CTkButton(self.root, text="Ağı Tara", command=self.scan_network)
         self.scan_button.pack(pady=10)
@@ -53,9 +68,19 @@ class NetworkScannerApp:
             except socket.herror:
                 hostname = "Bilinmeyen Cihaz"
 
-            output = f"IP: {received.psrc}\nMAC: {received.hwsrc}\nÜretici: {vendor}\nCihaz Adı: {hostname}\n{'='*40}\n"
+            device_type = self.device_type_entry.get() or "Bilinmeyen Tür"
+            device_location = self.device_location_entry.get() or "Bilinmeyen Konum"
+            device_description = self.device_description_entry.get() or "Açıklama Yok"
+            device_os = self.device_os_entry.get() or "Bilinmeyen OS"
+            device_owner = self.device_owner_entry.get() or "Bilinmeyen Sahip"
+
+            output = (f"IP: {received.psrc}\nMAC: {received.hwsrc}\nÜretici: {vendor}\n"
+                      f"Cihaz Adı: {hostname}\nCihaz Türü: {device_type}\n"
+                      f"Cihaz Konumu: {device_location}\nAçıklama: {device_description}\n"
+                      f"İşletim Sistemi: {device_os}\nCihaz Sahibi: {device_owner}\n"
+                      f"{'='*40}\n")
             self.output_text.insert(tk.END, output)
-            scan_results.append((received.psrc, received.hwsrc, vendor, hostname))  # Sonuçları ekle
+            scan_results.append((received.psrc, received.hwsrc, vendor, hostname, device_type, device_location, device_description, device_os, device_owner))  # Sonuçları ekle
 
         self.history.append(scan_results)  # Geçmişe ekle
         count_text = f"Toplam Bulunan Cihaz Sayısı: {device_count}"
@@ -67,11 +92,16 @@ class NetworkScannerApp:
         self.output_text.delete("1.0", tk.END)
         self.device_count_text.delete("1.0", tk.END)
         self.ip_entry.delete(0, tk.END)
+        self.device_type_entry.delete(0, tk.END)
+        self.device_location_entry.delete(0, tk.END)
+        self.device_description_entry.delete(0, tk.END)
+        self.device_os_entry.delete(0, tk.END)
+        self.device_owner_entry.delete(0, tk.END)
 
     def save_results(self):
         with open("network_scan_results.csv", "w", newline='') as f:
             writer = csv.writer(f)
-            writer.writerow(["IP", "MAC", "Üretici", "Cihaz Adı"])  # Başlıklar
+            writer.writerow(["IP", "MAC", "Üretici", "Cihaz Adı", "Cihaz Türü", "Cihaz Konumu", "Açıklama", "İşletim Sistemi", "Cihaz Sahibi"])  # Başlıklar
             for scan in self.history:
                 for device in scan:
                     writer.writerow(device)  # Sonuçları yaz
