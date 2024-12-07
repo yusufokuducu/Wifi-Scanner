@@ -24,7 +24,7 @@ Bu uygulama, aşağıdaki Python kütüphanelerine ihtiyaç duyar:
 
 1. Projeyi klonlayın veya indirin:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/faust-lvii/Network-Scanner
    cd test2
    ```
 
