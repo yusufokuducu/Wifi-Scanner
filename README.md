@@ -25,7 +25,7 @@ Bu uygulama, aşağıdaki Python kütüphanelerine ihtiyaç duyar:
 1. Projeyi klonlayın veya indirin:
    ```bash
    git clone https://github.com/faust-lvii/Network-Scanner
-   cd test2
+   cd Network-Scanner
    ```
 
 2. Gerekli kütüphaneleri yükleyin:
@@ -35,7 +35,7 @@ Bu uygulama, aşağıdaki Python kütüphanelerine ihtiyaç duyar:
 
 3. Uygulamayı çalıştırın:
    ```bash
-   python test2.py
+   python Scanner.py
    ```
 
 ## Kullanım
