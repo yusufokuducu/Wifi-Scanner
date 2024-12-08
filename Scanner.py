@@ -45,12 +45,27 @@ class NetworkScannerApp:
 
         self.history = []  # Tarama geçmişi
 
+        self.loading_label = ctk.CTkLabel(self.root, text="")
+        self.loading_label.pack(pady=10)
+
     def scan_network(self):
         self.output_text.delete("1.0", tk.END)
         self.device_count_text.delete("1.0", tk.END)
-        self.output_text.insert(tk.END, "Tarama başlatılıyor...\n")
+        self.loading_label.configure(text="Tarama başlatılıyor...")
+        self.loading_label.update()
 
         target_ip = self.ip_entry.get() or "192.168.1.1/24"
+        
+        self.loading_animation()
+        self.root.after(100, self.perform_scan, target_ip)
+
+    def loading_animation(self):
+        for i in range(3):
+            self.loading_label.configure(text="Tarama başlatılıyor" + "." * (i + 1))
+            self.root.update()
+            self.root.after(500)
+
+    def perform_scan(self, target_ip):
         arp = ARP(pdst=target_ip)
         ether = Ether(dst="ff:ff:ff:ff:ff:ff")
         packet = ether/arp
@@ -87,6 +102,7 @@ class NetworkScannerApp:
         self.device_count_text.insert(tk.END, count_text)
         
         self.output_text.insert(tk.END, "\nTarama tamamlandı.\n")
+        self.loading_label.configure(text="")
 
     def clear_results(self):
         self.output_text.delete("1.0", tk.END)
