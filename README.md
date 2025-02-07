@@ -1,55 +1,72 @@
-# Network Scanner App
+# WiFi Scanner
 
-Bu proje, yerel ağınızdaki cihazları taramak için basit bir GUI uygulamasıdır. Uygulama, IP aralığını belirterek ağınızdaki cihazların IP adreslerini, MAC adreslerini ve cihaz adlarını bulmanıza yardımcı olur.
+## Overview
 
-## Özellikler
+WiFi Scanner is a Python-based ARP network scanning application designed to quickly discover devices on your local network. With a user-friendly graphical interface built using CustomTkinter, this tool offers real-time scanning results, CSV export functionality, and robust error handling. It ensures secure operation by requiring administrative privileges for sensitive network operations.
 
-- **Ağ Tarama**: Belirtilen IP aralığında cihazları tarar.
-- **Sonuçları Görüntüleme**: Tarama sonuçlarını kullanıcı arayüzünde görüntüler.
-- **Sonuçları Temizleme**: Önceki tarama sonuçlarını temizleme imkanı.
-- **Sonuçları CSV Olarak Kaydetme**: Tarama sonuçlarını CSV formatında kaydetme.
-- **Tarama Geçmişi**: Önceki tarama sonuçlarını saklama.
+## Features
 
-## Gereksinimler
+- **ARP Scanning**: Leverages Scapy for fast and accurate ARP-based network scanning.
+- **User-Friendly GUI**: A clean, responsive interface built with CustomTkinter.
+- **CSV Export**: Export scan results easily to CSV for further analysis.
+- **Admin Checks**: Verifies administrative rights to ensure safe scanning operations.
+- **Multi-Threaded Scanning**: Runs scans in a separate thread to keep the UI responsive.
 
-Bu uygulama, aşağıdaki Python kütüphanelerine ihtiyaç duyar:
+## Requirements
 
-- `tkinter`
-- `customtkinter`
-- `scapy`
-- `socket`
-- `csv`
+- Python 3.8 or later
+- [Scapy](https://scapy.readthedocs.io/en/latest/)
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
+- Standard Python libraries: `socket`, `csv`, `logging`, `threading`, `tkinter`
 
-## Kurulum
+## Installation
 
-1. Projeyi klonlayın veya indirin:
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/faust-lvii/Network-Scanner
-   cd Network-Scanner
+   git clone https://github.com/faust-lvii/Wifi-Scanner.git
    ```
 
-2. Gerekli kütüphaneleri yükleyin:
+2. **Navigate to the project directory**:
    ```bash
-   pip install customtkinter scapy
+   cd Wifi-Scanner
    ```
 
-3. Uygulamayı çalıştırın:
+3. **(Optional) Create and activate a virtual environment**:
    ```bash
-   python Scanner.py
+   python -m venv venv
+   # On Windows:
+   venv\Scripts\activate
+   # On Unix or MacOS:
+   source venv/bin/activate
    ```
 
-## Kullanım
+4. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   *If `requirements.txt` is not available, manually install Scapy and CustomTkinter:* 
+   ```bash
+   pip install scapy customtkinter
+   ```
 
-1. Uygulama açıldığında, taramak istediğiniz IP aralığını girin (örneğin: `192.168.1.1/24`).
-2. "Ağı Tara" butonuna tıklayarak tarama işlemini başlatın.
-3. Tarama sonuçları, uygulama penceresinde görüntülenecektir.
-4. Sonuçları CSV formatında kaydetmek için "Sonuçları CSV Olarak Kaydet" butonuna tıklayın.
-5. Önceki sonuçları temizlemek için "Sonuçları Temizle" butonuna tıklayın.
+## Usage
 
-## Katkıda Bulunma
+Run the application with:
 
-Bu projeye katkıda bulunmak isterseniz, lütfen bir pull request oluşturun veya önerilerinizi paylaşın.
+```bash
+python main.py
+```
 
-## Lisans
+*Note: Ensure you run the application as an administrator for ARP scanning to function correctly.*
 
-Bu proje MIT Lisansı altında lisanslanmıştır. Daha fazla bilgi için LICENSE dosyasına bakın.
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for bug fixes and improvements.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgements
+
+Special thanks to the developers of Scapy and CustomTkinter for providing the tools that make this project possible.
