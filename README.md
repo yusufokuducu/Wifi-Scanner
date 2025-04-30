@@ -8,16 +8,22 @@ WiFi Scanner is a Python-based ARP network scanning application designed to quic
 
 - **ARP Scanning**: Leverages Scapy for fast and accurate ARP-based network scanning.
 - **User-Friendly GUI**: A clean, responsive interface built with CustomTkinter.
+- **Network Interface Selection**: Automatically detects and allows selection of available network interfaces.
+- **MAC Vendor Lookup**: Identifies device manufacturers using MAC address lookup.
 - **CSV Export**: Export scan results easily to CSV for further analysis.
 - **Admin Checks**: Verifies administrative rights to ensure safe scanning operations.
 - **Multi-Threaded Scanning**: Runs scans in a separate thread to keep the UI responsive.
+- **Progress Indication**: Visual feedback during scanning operations.
+- **Error Handling**: Robust error handling and logging for better diagnostics.
 
 ## Requirements
 
 - Python 3.8 or later
-- [Scapy](https://scapy.readthedocs.io/en/latest/)
-- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
-- Standard Python libraries: `socket`, `csv`, `logging`, `threading`, `tkinter`
+- Dependencies (automatically installed via requirements.txt):
+  - Scapy
+  - CustomTkinter
+  - psutil
+  - requests
 
 ## Installation
 
@@ -44,20 +50,31 @@ WiFi Scanner is a Python-based ARP network scanning application designed to quic
    ```bash
    pip install -r requirements.txt
    ```
-   *If `requirements.txt` is not available, manually install Scapy and CustomTkinter:* 
-   ```bash
-   pip install scapy customtkinter
-   ```
 
 ## Usage
 
-Run the application with:
+1. **Run as Administrator** (recommended for full functionality):
+   ```bash
+   python main.py
+   ```
 
-```bash
-python main.py
-```
+2. **Select Network Interface**:
+   Choose your network interface from the dropdown menu. The IP range will be automatically populated.
 
-*Note: Ensure you run the application as an administrator for ARP scanning to function correctly.*
+3. **Customize IP Range** (optional):
+   Modify the IP range if needed (e.g., 192.168.1.0/24).
+
+4. **Start Scanning**:
+   Click "Ağı Tara" (Scan Network) to begin the scanning process.
+
+5. **Export Results**:
+   After scanning, you can save the results to a CSV file by clicking "Sonuçları CSV Olarak Kaydet" (Save Results as CSV).
+
+## Troubleshooting
+
+- **Admin Privileges Required**: The application needs administrator privileges for ARP scanning. If you see a warning about admin rights, restart the application as an administrator.
+- **Missing Dependencies**: If you encounter dependency errors, make sure you've installed all required packages using `pip install -r requirements.txt`.
+- **Scan Not Finding Devices**: Ensure you're using the correct network interface and IP range.
 
 ## Contributing
 
