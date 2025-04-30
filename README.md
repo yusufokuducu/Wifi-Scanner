@@ -29,7 +29,7 @@ WiFi Scanner is a Python-based ARP network scanning application designed to quic
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/faust-lvii/Wifi-Scanner.git
+   git clone https://github.com/yusufokuducu/Wifi-Scanner.git
    ```
 
 2. **Navigate to the project directory**:
