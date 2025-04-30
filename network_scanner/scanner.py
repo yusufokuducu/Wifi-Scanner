@@ -1,11 +1,17 @@
 import socket
 import logging
 import requests
-from scapy.all import ARP, Ether, srp
-import threading
+import platform
+import sys
 import time
+import threading
+from scapy.all import ARP, Ether, srp, conf as scapy_conf
+
+# Configure Scapy to be less verbose about warnings
+scapy_conf.verbosity = 0
 
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def get_mac_vendor(mac_address):
     """
@@ -19,7 +25,7 @@ def get_mac_vendor(mac_address):
             return response.text
         return "Bilinmeyen Üretici"
     except Exception as e:
-        logging.debug(f"Error in vendor lookup: {e}")
+        logger.debug(f"Error in vendor lookup: {e}")
         return "Bilinmeyen Üretici"
 
 def perform_arp_scan(target_ip: str):
@@ -28,12 +34,18 @@ def perform_arp_scan(target_ip: str):
     Each device is a dictionary with keys: ip, mac, vendor, hostname.
     """
     try:
+        # Check if scapy is using pcap
+        if not getattr(scapy_conf, 'use_pcap', True) and platform.system() == 'Windows':
+            logger.warning("Libpcap not available. ARP scan may not be fully functional.")
+        
         arp = ARP(pdst=target_ip)
         ether = Ether(dst="ff:ff:ff:ff:ff:ff")
         packet = ether/arp
         
+        logger.info(f"Starting ARP scan on {target_ip}")
         # Attempt scan with timeout
-        answered, _ = srp(packet, timeout=3, verbose=0)
+        answered, _ = srp(packet, timeout=3, verbose=0, retry=2)
+        logger.info(f"Scan completed, found {len(answered)} devices")
         
         scan_results = []
         vendor_lookup_threads = []
@@ -69,5 +81,5 @@ def perform_arp_scan(target_ip: str):
             
         return scan_results
     except Exception as e:
-        logging.error(f"Error in perform_arp_scan: {e}")
+        logger.error(f"Error in perform_arp_scan: {e}")
         return [] 

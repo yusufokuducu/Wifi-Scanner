@@ -100,6 +100,8 @@ class NetworkScannerApp:
         self.devices = []
         self.scan_thread = None
         self.is_scanning = False
+        self.progress_value = 0
+        self.animation_id = None
         
         # Set initial IP address
         self.on_interface_change(self.interfaces_var.get())
@@ -147,21 +149,27 @@ class NetworkScannerApp:
         self.scan_thread = threading.Thread(target=self.run_scan, args=(ip_range,), daemon=True)
         self.scan_thread.start()
         
-        # Start progress animation
-        self.animate_progress()
+        # Reset progress value and start animation
+        self.progress_value = 0
+        self.progress_bar.set(0)
+        self.update_progress_animation()
     
-    def animate_progress(self):
-        if self.is_scanning:
-            self.progress_bar.set(0)  # Reset progress bar
-            for i in range(101):
-                if not self.is_scanning:
-                    break
-                self.progress_bar.set(i/100)
-                self.root.update_idletasks()
-                time.sleep(0.03)
+    def update_progress_animation(self):
+        # Cancel any existing animation
+        if self.animation_id:
+            self.root.after_cancel(self.animation_id)
+            self.animation_id = None
             
-            if self.is_scanning:
-                self.animate_progress()  # Loop animation until scan completes
+        if self.is_scanning:
+            # Increment progress value slowly between 0 and 0.95
+            if self.progress_value < 0.95:
+                self.progress_value += 0.01
+                if self.progress_value > 0.95:
+                    self.progress_value = 0.95
+            
+            self.progress_bar.set(self.progress_value)
+            # Schedule next update after 100ms
+            self.animation_id = self.root.after(100, self.update_progress_animation)
     
     def run_scan(self, ip_range):
         try:
@@ -174,8 +182,17 @@ class NetworkScannerApp:
             self.update_status("Tarama sırasında bir hata oluştu.")
         finally:
             self.is_scanning = False
-            self.root.after(0, lambda: self.scan_button.configure(state="normal"))
-            self.progress_bar.set(1)  # Complete the progress bar
+            # Complete the progress bar and re-enable the scan button in the main thread
+            self.root.after(0, self.complete_scan)
+    
+    def complete_scan(self):
+        """Complete the scanning process by updating UI elements"""
+        self.progress_bar.set(1)
+        self.scan_button.configure(state="normal")
+        # Cancel any ongoing animation
+        if self.animation_id:
+            self.root.after_cancel(self.animation_id)
+            self.animation_id = None
 
     def display_results(self, devices):
         # Ensure UI updates happen in the main thread using after()
@@ -199,6 +216,11 @@ class NetworkScannerApp:
         self.status_label.configure(text="")
         self.device_count_label.configure(text="Bulunan Cihazlar: 0")
         self.progress_bar.set(0)
+        
+        # Cancel any ongoing animation
+        if self.animation_id:
+            self.root.after_cancel(self.animation_id)
+            self.animation_id = None
 
     def save_results(self):
         if not self.devices:
