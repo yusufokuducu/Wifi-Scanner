@@ -1,4 +1,9 @@
 scapy==2.5.0
 customtkinter==5.2.1
 psutil==5.9.6
-requests==2.31.0 
+requests==2.31.0
+matplotlib==3.8.3
+pillow==10.2.0
+ipaddress==1.0.23
+netifaces==1.0.0
+python-nmap==0.7.1

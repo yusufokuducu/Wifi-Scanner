@@ -1,0 +1,46 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Application specific
+*.log
+app.log
+settings.json
+*.csv
+*.json
+!requirements.json
+
+# Scan results
+scan_results/
+*.pcap
+
+# Cached data
+*.cache
+vendor_cache.json
+
+# Documentation
+docs/_build/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
