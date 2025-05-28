@@ -59,7 +59,7 @@ Network Scanner is a Python-based ARP network scanning application designed to q
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/network-scanner.git
+   git clone https://github.com/yusufokuducu/network-scanner.git
    ```
 
 2. **Navigate to the project directory**:
